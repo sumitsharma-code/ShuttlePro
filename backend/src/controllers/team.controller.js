@@ -24,8 +24,8 @@ async function getAllTeams(req, res) {
 
         res.status(200).json({
             "success": true,
-            message: "Teams fetched successfully",
-            allTeams
+            message: "Teams Fetched Successfully",
+            teams: allTeams
         });
     }
     catch (error){
@@ -42,8 +42,8 @@ async function getTeamById(req, res) {
 
         if(!team) {
             return res.status(404).json({
-                "success": false,
-                message: "team Not Found"
+                success: false,
+                message: "Team Not Found"
             })
         }
 
@@ -54,7 +54,7 @@ async function getTeamById(req, res) {
     }
     catch (error) {
         res.status(500).json({
-            "success": false,
+            success: false,
             message: error.message
         });
     }
@@ -66,19 +66,19 @@ async function deleteTeamById(req, res) {
 
         if(!team) {
             return res.status(404).json({
-                "success": false,
-                message: "team Not Found"
+                success: false,
+                message: "Team Not Found"
             })
         }
 
         res.status(200).json({
             success: true,
-            message: "team Deleted Successfully"
+            message: "Team Deleted Successfully"
         });
     }
     catch (error) {
         res.status(500).json({
-            "success": false,
+            success: false,
             message: error.message
         });
     }

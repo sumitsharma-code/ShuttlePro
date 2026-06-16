@@ -23,8 +23,8 @@ async function getAllPlayers(req, res) {
         const allPlayers = await playerModel.find();
 
         res.status(200).json({
-            "success": true,
-            message: "Players fetched successfully",
+            success: true,
+            message: "Players Fetched Successfully",
             allPlayers
         });
     }
@@ -42,7 +42,7 @@ async function getPlayerById(req, res) {
 
         if(!player) {
             return res.status(404).json({
-                "success": false,
+                success: false,
                 message: "Player Not Found"
             })
         }
@@ -54,7 +54,7 @@ async function getPlayerById(req, res) {
     }
     catch (error) {
         res.status(500).json({
-            "success": false,
+            success: false,
             message: error.message
         });
     }
@@ -66,7 +66,7 @@ async function deletePlayerById(req, res) {
 
         if(!player) {
             return res.status(404).json({
-                "success": false,
+                success: false,
                 message: "Player Not Found"
             })
         }
@@ -78,7 +78,7 @@ async function deletePlayerById(req, res) {
     }
     catch (error) {
         res.status(500).json({
-            "success": false,
+            success: false,
             message: error.message
         });
     }

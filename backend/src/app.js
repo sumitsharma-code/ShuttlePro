@@ -9,5 +9,6 @@ const teamRoutes = require("./routes/team.route");
 
 app.use("/api", playerRoutes);
 app.use("/api", tournamentRoutes);
+app.use("/api", teamRoutes);
 
 module.exports = app;

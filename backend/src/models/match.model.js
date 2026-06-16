@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const matchesSchema = new mongoose.Schema({
+const matchSchema = new mongoose.Schema({
     tournamentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tournament",
@@ -47,6 +47,6 @@ const matchesSchema = new mongoose.Schema({
     }
 }); 
 
-const matchesModel = mongoose.model("Match", matchesSchema);
+const matchModel = mongoose.model("Match", matchSchema);
 
-module.exports = matchesModel;
+module.exports = matchModel;

@@ -1,30 +1,13 @@
-const tournamentModel = require('../models/tournament.model');
+const setModel = require('../models/set.model');
 
-async function createTournament(req, res) {
+async function createSet(req, res) {
     try {
-        const tour = await tournamentModel.create(req.body);
+        const set = await setModel.create(req.body);
 
         res.status(201).json({
             success: true,
-            message: "Tournament Created Successfully!",
-            tour
-        });
-    }
-    catch (error){
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
-
-async function getAllTournaments(req, res) {
-    try {
-        const tour = await tournamentModel.find();
-        res.status(200).json({
-            success: true,
-            message: "Tournament Fetched!",
-            tour
+            message: "Set Created Successfully",
+            set
         });
     }
     catch (error) {
@@ -35,20 +18,62 @@ async function getAllTournaments(req, res) {
     }
 }
 
-async function getTournamentById(req, res) {
+async function getAllSets(req, res) {
     try {
-        const tour = await tournamentModel.findById(req.params.id);
+        const sets = await setModel.find();
 
-        if(!tour) {
+        res.status(200).json({
+            success: true,
+            message: "Sets Fetched Successfully",
+            sets
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+async function getSetById(req, res) {
+    try {
+        const set = await setModel.findById(req.params.id);
+
+        if(!set) {
             return res.status(404).json({
                 success: false,
-                message: "No tournament found with this id"
+                message: "Set Not Found"
+            });
+        }
+        
+        res.status(200).json({
+            success: true,
+            message: "Set Fetched Successfully",
+            set
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+async function deleteSetById(req, res) {
+    try {
+        const set = await setModel.findByIdAndDelete(req.params.id);
+        
+        if(!set) {
+            return res.status(404).json({
+                success: false,
+                message: "Set Not Found"
             });
         }
         res.status(200).json({
             success: true,
-            message: "tournament fetched!",
-            tour
+            message: "Set Deleted Successfully"
         });
     }
     catch (error) {
@@ -58,35 +83,10 @@ async function getTournamentById(req, res) {
         });
     }
 }
-
-async function deleteTournamentById(req, res) {
-    try {
-        const tour = await tournamentModel.findByIdAndDelete(req.params.id);
-
-        if(!tour) {
-            return res.status(404).json({
-                success: false,
-                message: "No tournament found with this id"
-            });
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "tournament deleted successfully"
-        });
-    }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
-
 
 module.exports = {
-    createTournament,
-    getAllTournaments,
-    getTournamentById,
-    deleteTournamentById
-}
+    createSet,
+    getAllSets,
+    getSetById,
+    deleteSetById
+};

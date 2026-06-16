@@ -1,30 +1,13 @@
-const tournamentModel = require('../models/tournament.model');
+const matchModel = require('../models/match.model');
 
-async function createTournament(req, res) {
+async function createMatch(req, res) {
     try {
-        const tour = await tournamentModel.create(req.body);
+        const match = await matchModel.create(req.body);
 
         res.status(201).json({
             success: true,
-            message: "Tournament Created Successfully!",
-            tour
-        });
-    }
-    catch (error){
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
-
-async function getAllTournaments(req, res) {
-    try {
-        const tour = await tournamentModel.find();
-        res.status(200).json({
-            success: true,
-            message: "Tournament Fetched!",
-            tour
+            message: "Match Created Successfully",
+            match
         });
     }
     catch (error) {
@@ -35,20 +18,62 @@ async function getAllTournaments(req, res) {
     }
 }
 
-async function getTournamentById(req, res) {
+async function getAllMatches(req, res) {
     try {
-        const tour = await tournamentModel.findById(req.params.id);
+        const matches = await matchModel.find();
 
-        if(!tour) {
+        res.status(200).json({
+            success: true,
+            message: "Matches Fetched Successfully",
+            matches
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+async function getMatchById(req, res) {
+    try {
+        const match = await matchModel.findById(req.params.id);
+
+        if(!match) {
             return res.status(404).json({
                 success: false,
-                message: "No tournament found with this id"
+                message: "Match Not Found"
+            });
+        }
+        
+        res.status(200).json({
+            success: true,
+            message: "Match Fetched Successfully",
+            match
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+async function deleteMatchById(req, res) {
+    try {
+        const match = await matchModel.findByIdAndDelete(req.params.id);
+        
+        if(!match) {
+            return res.status(404).json({
+                success: false,
+                message: "Match Not Found"
             });
         }
         res.status(200).json({
             success: true,
-            message: "tournament fetched!",
-            tour
+            message: "Match Deleted Successfully"
         });
     }
     catch (error) {
@@ -58,35 +83,10 @@ async function getTournamentById(req, res) {
         });
     }
 }
-
-async function deleteTournamentById(req, res) {
-    try {
-        const tour = await tournamentModel.findByIdAndDelete(req.params.id);
-
-        if(!tour) {
-            return res.status(404).json({
-                success: false,
-                message: "No tournament found with this id"
-            });
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "tournament deleted successfully"
-        });
-    }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
-
 
 module.exports = {
-    createTournament,
-    getAllTournaments,
-    getTournamentById,
-    deleteTournamentById
-}
+    createMatch,
+    getAllMatches,
+    getMatchById,
+    deleteMatchById
+};
