@@ -86,7 +86,7 @@ const updateTournamentById = asyncHandler(
 const getSinglesRegistrationByTournamentId = asyncHandler(
     async (req, res) => {
         const singlesRegistration = await singlesRegistrationModel
-            .find({tournamentId: req.params.id})
+            .find({categoryId: req.params.id})
             .populate("playerId");
         
         res.status(200).json({
@@ -101,7 +101,7 @@ const getSinglesRegistrationByTournamentId = asyncHandler(
 const getDoublesRegistrationByTournamentId = asyncHandler(
     async (req, res) => {
         const doublesRegistration = await doublesRegistrationModel
-            .find({tournamentId: req.params.id})
+            .find({categoryId: req.params.id})
             .populate("teamId");
 
         res.status(200).json({
@@ -116,7 +116,7 @@ const getDoublesRegistrationByTournamentId = asyncHandler(
 const getMatchesByTournamentId = asyncHandler(
     async (req, res) => {
         const matches = await matchModel
-            .find({ tournamentId: req.params.id })
+            .find({ categoryId: req.params.id })
             .populate("playerId1")
             .populate("playerId2")
             .populate("teamId1")

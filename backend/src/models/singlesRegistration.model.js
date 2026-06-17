@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const singlesSchema = new mongoose.Schema({
-    tournamentId: {
+    categoryId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Tournament",
+        ref: "Category",
         required: true
     },
     playerId: {

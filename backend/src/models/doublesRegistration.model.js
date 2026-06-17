@@ -1,13 +1,9 @@
 const mongoose = require('mongoose');
 
 const doublesSchema = new mongoose.Schema({
-    tournamentId: {
+    categoryId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Tournament"
-    },
-    doublesType: {
-        type: String,
-        enum: ["Males", "Females", "Mixed"],
+        ref: "Category",
         required: true
     },
     teamId: {
