@@ -12,4 +12,6 @@ router.get("/set/:id",validateObjectId, setController.getSetById);
 
 router.delete("/set/:id",validateObjectId, setController.deleteSetById);
 
+router.put("/set/:id",validateObjectId, setController.updateSetById);
+
 module.exports = router;

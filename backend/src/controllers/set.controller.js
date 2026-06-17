@@ -1,6 +1,8 @@
 const setModel = require('../models/set.model');
 const asyncHandler = require('../middlewares/asyncHandler');
 
+const ApiError = require("../utils/apiError");
+
 const createSet = asyncHandler(
     async (req, res) => {
         const set = await setModel.create(req.body);
@@ -29,11 +31,8 @@ const getSetById = asyncHandler(
     async (req, res) => {
         const set = await setModel.findById(req.params.id);
 
-        if (!set) {
-            return res.status(404).json({
-                success: false,
-                message: "Set Not Found"
-            });
+        if(!set) {
+            throw new ApiError(404, "Set not found");
         }
 
         res.status(200).json({
@@ -48,11 +47,8 @@ const deleteSetById = asyncHandler(
     async (req, res) => {
         const set = await setModel.findByIdAndDelete(req.params.id);
 
-        if (!set) {
-            return res.status(404).json({
-                success: false,
-                message: "Set Not Found"
-            });
+        if(!set) {
+            throw new ApiError(404, "Set not found");
         }
 
         res.status(200).json({
@@ -74,7 +70,7 @@ const updateSetById = asyncHandler(
         );
 
         if(!set) {
-            throw new Error("Set not found");
+            throw new ApiError(404, "Set not found");
         }
 
         res.status(200).json({

@@ -11,4 +11,10 @@ router.get('/tournament/:id',validateObjectId, tournamentController.getTournamen
 
 router.delete("/tournament/:id",validateObjectId, tournamentController.deleteTournamentById);
 
+router.put("/tournament/:id",validateObjectId, tournamentController.updateTournamentById);
+
+router.get("/tournament/:id/singles-registrations", validateObjectId, tournamentController.getSinglesRegistrationByTournamentId );
+router.get("/tournament/:id/doubles-registrations", validateObjectId, tournamentController.getDoublesRegistrationByTournamentId );
+router.get("/tournament/:id/matches", validateObjectId, tournamentController.getMatchesByTournamentId);
+
 module.exports = router;

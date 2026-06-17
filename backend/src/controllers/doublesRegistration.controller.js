@@ -1,5 +1,6 @@
 const doublesRegistrationModel = require("../models/doublesRegistration.model");
 const asyncHandler = require('../middlewares/asyncHandler');
+const ApiError = require("../utils/apiError");
 
 const createDoublesRegistration = asyncHandler(
     async (req, res) => {
@@ -7,7 +8,7 @@ const createDoublesRegistration = asyncHandler(
 
         res.status(201).json({
             success: true,
-            message:"Doubles Registration Successful",
+            message:"Doubles registration successful",
             registration
         });
     }
@@ -15,12 +16,12 @@ const createDoublesRegistration = asyncHandler(
 
 const getAllDoublesRegistrations = asyncHandler(
     async (req, res) => {
-        const allDoublesRegistrations = await doublesRegistrationModel.find();
+        const registrations = await doublesRegistrationModel.find();
 
         res.status(200).json({
             success: true,
-            message: "All Registrations Fetched Successfully",
-            allDoublesRegistrations
+            message: "Doubles registrations fetched successfully",
+            registrations
         });
     }
 );
@@ -30,10 +31,7 @@ const getDoublesRegistrationById = asyncHandler(
         const doublesRegistration = await doublesRegistrationModel.findById(req.params.id);
 
         if(!doublesRegistration) {
-            return res.status(404).json({
-                success: false,
-                message: "This Doubles Registration Is Not Found"
-            });
+            throw new ApiError(404, "Doubles Registration not found");
         }
 
         res.status(200).json({
@@ -48,10 +46,7 @@ const deleteDoublesRegistrationById = asyncHandler(
         const doublesRegistration = await doublesRegistrationModel.findByIdAndDelete(req.params.id);
 
         if(!doublesRegistration) {
-            return res.status(404).json({
-                success: false,
-                message: "This Doubles Registration Is Not Found"
-            })
+            throw new ApiError(404, "Doubles Registration not found");
         }
 
         res.status(200).json({
@@ -73,7 +68,7 @@ const updateDoublesRegistrationById = asyncHandler(
         );
 
         if(!registration) {
-            throw new Error("Doubles Registration not found");
+            throw new ApiError(404, "Doubles Registration not found");
         }
 
         res.status(200).json({

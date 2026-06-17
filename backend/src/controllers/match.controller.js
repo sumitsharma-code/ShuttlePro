@@ -1,13 +1,15 @@
 const asyncHandler = require('../middlewares/asyncHandler');
 const matchModel = require('../models/match.model');
 
+const ApiError = require("../utils/apiError");
+
 const createMatch = asyncHandler(
     async (req, res) => {
         const match = await matchModel.create(req.body);
 
         res.status(201).json({
             success: true,
-            message: "Match Created Successfully",
+            message: "Match created successfully",
             match
         });
     }
@@ -19,7 +21,7 @@ const getAllMatches = asyncHandler(
 
         res.status(200).json({
             success: true,
-            message: "Matches Fetched Successfully",
+            message: "Matches fetched successfully",
             matches
         });
     }
@@ -30,10 +32,7 @@ const getMatchById = asyncHandler(
         const match = await matchModel.findById(req.params.id);
 
         if(!match) {
-            return res.status(404).json({
-                success: false,
-                message: "Match Not Found"
-            });
+            throw new ApiError(404, "Match not found");
         }
         
         res.status(200).json({
@@ -49,11 +48,9 @@ const deleteMatchById = asyncHandler(
         const match = await matchModel.findByIdAndDelete(req.params.id);
         
         if(!match) {
-            return res.status(404).json({
-                success: false,
-                message: "Match Not Found"
-            });
+            throw new ApiError(404, "Match not found");
         }
+
         res.status(200).json({
             success: true,
             message: "Match Deleted Successfully"
@@ -73,7 +70,7 @@ const updateMatchById = asyncHandler(
         );
 
         if(!match) {
-            throw new Error("Match not found");
+            throw new ApiError(404, "Match not found");
         }
 
         res.status(200).json({

@@ -11,5 +11,6 @@ router.get("/player", playerController.getAllPlayers);
 router.get("/player/:id",validateObjectId, playerController.getPlayerById);
 
 router.delete("/player/:id",validateObjectId, playerController.deletePlayerById);
+router.put("/player/:id",validateObjectId, playerController.updatePlayerById);
 
 module.exports = router;

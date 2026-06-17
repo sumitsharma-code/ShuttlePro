@@ -12,4 +12,6 @@ router.get("/doublesRegistration/:id", validateObjectId, doublesRegistrationCont
 
 router.delete("/doublesRegistration/:id",validateObjectId , doublesRegistrationController.deleteDoublesRegistrationById);
 
+router.put("/doublesRegistration/:id",validateObjectId , doublesRegistrationController.updateDoublesRegistrationById);
+
 module.exports = router;

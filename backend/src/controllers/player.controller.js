@@ -1,6 +1,8 @@
 const playerModel = require("../models/player.model");
 const asyncHandler = require("../middlewares/asyncHandler");
 
+const ApiError = require("../utils/apiError");
+
 const createPlayer = asyncHandler(
     async (req, res) => {
         const player = await playerModel.create(req.body);
@@ -15,12 +17,12 @@ const createPlayer = asyncHandler(
 
 const getAllPlayers = asyncHandler(
     async (req, res) => {
-        const allPlayers = await playerModel.find();
+        const players = await playerModel.find();
 
         res.status(200).json({
             success: true,
             message: "Players Fetched Successfully",
-            allPlayers
+            players
         });
     }
 );
@@ -29,11 +31,8 @@ const getPlayerById = asyncHandler(
     async (req, res) => {
         const player = await playerModel.findById(req.params.id);
 
-        if (!player) {
-            return res.status(404).json({
-                success: false,
-                message: "Player Not Found"
-            });
+        if(!player) {
+            throw new ApiError(404, "Player not found");
         }
 
         res.status(200).json({
@@ -47,11 +46,8 @@ const deletePlayerById = asyncHandler(
     async (req, res) => {
         const player = await playerModel.findByIdAndDelete(req.params.id);
 
-        if (!player) {
-            return res.status(404).json({
-                success: false,
-                message: "Player Not Found"
-            });
+        if(!player) {
+            throw new ApiError(404, "Player not found");
         }
 
         res.status(200).json({
@@ -73,7 +69,7 @@ const updatePlayerById = asyncHandler(
         );
 
         if(!player) {
-            throw new Error("Player not found");
+            throw new ApiError(404, "Player not found");
         }
 
         res.status(200).json({

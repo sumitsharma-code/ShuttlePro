@@ -8,5 +8,6 @@ router.post("/match", matchController.createMatch);
 router.get("/match", matchController.getAllMatches);
 router.get("/match/:id",validateObjectId, matchController.getMatchById);
 router.delete("/match/:id",validateObjectId, matchController.deleteMatchById);
+router.put("/match/:id",validateObjectId, matchController.updateMatchById);
 
 module.exports = router;

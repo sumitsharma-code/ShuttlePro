@@ -1,6 +1,8 @@
 const teamModel = require("../models/team.model");
 const asyncHandler = require("../middlewares/asyncHandler");
 
+const ApiError = require("../utils/apiError");
+
 const createTeam = asyncHandler(
     async (req, res) => {
         const team = await teamModel.create(req.body);
@@ -15,12 +17,12 @@ const createTeam = asyncHandler(
 
 const getAllTeams = asyncHandler(
     async (req, res) => {
-        const allTeams = await teamModel.find();
+        const teams = await teamModel.find();
 
         res.status(200).json({
             success: true,
             message: "Teams Fetched Successfully",
-            teams: allTeams
+            teams: teams
         });
     }
 );
@@ -29,11 +31,8 @@ const getTeamById = asyncHandler(
     async (req, res) => {
         const team = await teamModel.findById(req.params.id);
 
-        if (!team) {
-            return res.status(404).json({
-                success: false,
-                message: "Team Not Found"
-            });
+        if(!team) {
+            throw new ApiError(404, "Team not found");
         }
 
         res.status(200).json({
@@ -47,11 +46,8 @@ const deleteTeamById = asyncHandler(
     async (req, res) => {
         const team = await teamModel.findByIdAndDelete(req.params.id);
 
-        if (!team) {
-            return res.status(404).json({
-                success: false,
-                message: "Team Not Found"
-            });
+        if(!team) {
+            throw new ApiError(404, "Team not found");
         }
 
         res.status(200).json({
@@ -73,7 +69,7 @@ const updateTeamById = asyncHandler(
         );
 
         if(!team) {
-            throw new Error("Team not found");
+            throw new ApiError(404, "Team not found");
         }
 
         res.status(200).json({

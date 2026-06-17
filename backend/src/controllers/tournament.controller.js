@@ -1,5 +1,10 @@
 const tournamentModel = require('../models/tournament.model');
+const singlesRegistrationModel = require("../models/singlesRegistration.model")
+const doublesRegistrationModel = require("../models/doublesRegistration.model")
+const matchModel = require("../models/match.model")
+
 const asyncHandler = require("../middlewares/asyncHandler");
+const ApiError = require('../utils/apiError');
 
 const createTournament = asyncHandler(
     async (req, res) => {
@@ -15,42 +20,37 @@ const createTournament = asyncHandler(
 
 const getAllTournaments = asyncHandler(
     async (req, res) => {
-        const tour = await tournamentModel.find();
+        const tournaments = await tournamentModel.find();
         res.status(200).json({
             success: true,
             message: "Tournament Fetched!",
-            tour
+            tournaments: tournaments
         });
     }
 );
 
 const getTournamentById = asyncHandler(
     async (req, res) => {
-        const tour = await tournamentModel.findById(req.params.id);
+        const tournament = await tournamentModel.findById(req.params.id);
 
-        if(!tour) {
-            return res.status(404).json({
-                success: false,
-                message: "No tournament found with this id"
-            });
+        if(!tournament) {
+            throw new ApiError(404, "Tournament not found");
         }
+
         res.status(200).json({
             success: true,
             message: "tournament fetched!",
-            tour
+            tournament
         });
     }
 );
 
 const deleteTournamentById = asyncHandler(
     async (req, res) => {
-        const tour = await tournamentModel.findByIdAndDelete(req.params.id);
+        const tournament = await tournamentModel.findByIdAndDelete(req.params.id);
 
-        if(!tour) {
-            return res.status(404).json({
-                success: false,
-                message: "No tournament found with this id"
-            });
+        if(!tournament) {
+            throw new ApiError(404, "Tournament not found");
         }
 
         res.status(200).json({
@@ -72,7 +72,7 @@ const updateTournamentById = asyncHandler(
         );
 
         if(!tournament) {
-            throw new Error("Tournament not found");
+            throw new ApiError(404, "Tournament not found");
         }
 
         res.status(200).json({
@@ -83,10 +83,61 @@ const updateTournamentById = asyncHandler(
     }
 );
 
+const getSinglesRegistrationByTournamentId = asyncHandler(
+    async (req, res) => {
+        const singlesRegistration = await singlesRegistrationModel
+            .find({tournamentId: req.params.id})
+            .populate("playerId");
+        
+        res.status(200).json({
+            success: true,
+            message: "Tournament Players Fetched Successfully",
+            count: singlesRegistration.length,
+            singlesRegistration
+        })
+    }
+);
+
+const getDoublesRegistrationByTournamentId = asyncHandler(
+    async (req, res) => {
+        const doublesRegistration = await doublesRegistrationModel
+            .find({tournamentId: req.params.id})
+            .populate("teamId");
+
+        res.status(200).json({
+            success: true,
+            message: "Tournament Doubles Registrations Fetched Successfully",
+            count: doublesRegistration.length,
+            doublesRegistration
+        })
+    }
+);
+
+const getMatchesByTournamentId = asyncHandler(
+    async (req, res) => {
+        const matches = await matchModel
+            .find({ tournamentId: req.params.id })
+            .populate("playerId1")
+            .populate("playerId2")
+            .populate("teamId1")
+            .populate("teamId2");
+
+        res.status(200).json({
+            success: true,
+            count: matches.length,
+            message: "Tournament Matches Fetched Successfully",
+            matches
+        });
+    }
+);
+
 module.exports = {
     createTournament,
     getAllTournaments,
     getTournamentById,
     deleteTournamentById,
-    updateTournamentById
+    updateTournamentById,
+    getSinglesRegistrationByTournamentId,
+    getDoublesRegistrationByTournamentId,
+    getMatchesByTournamentId
 }

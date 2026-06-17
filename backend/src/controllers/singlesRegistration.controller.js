@@ -1,6 +1,8 @@
 const singlesRegistrationModel = require("../models/singlesRegistration.model");
 const asyncHandler = require("../middlewares/asyncHandler");
 
+const ApiError = require("../utils/apiError");
+
 const createSinglesRegistration = asyncHandler(
     async (req, res) => {
         const registration = await singlesRegistrationModel.create(req.body);
@@ -15,12 +17,12 @@ const createSinglesRegistration = asyncHandler(
 
 const getAllSinglesRegistrations = asyncHandler(
     async (req, res) => {
-        const allSinglesRegistrations = await singlesRegistrationModel.find();
+        const registrations = await singlesRegistrationModel.find();
 
         res.status(200).json({
             success: true,
             message: "All Registrations Fetched Successfully",
-            allSinglesRegistrations
+            registrations
         });
     }
 );
@@ -29,11 +31,8 @@ const getSinglesRegistrationById = asyncHandler(
     async (req, res) => {
         const singlesRegistration = await singlesRegistrationModel.findById(req.params.id);
 
-        if (!singlesRegistration) {
-            return res.status(404).json({
-                success: false,
-                message: "This Singles Registration Is Not Found"
-            });
+        if(!singlesRegistration) {
+            throw new ApiError(404, "Singles registration not found");
         }
 
         res.status(200).json({
@@ -47,11 +46,8 @@ const deleteSinglesRegistrationById = asyncHandler(
     async (req, res) => {
         const singlesRegistration = await singlesRegistrationModel.findByIdAndDelete(req.params.id);
 
-        if (!singlesRegistration) {
-            return res.status(404).json({
-                success: false,
-                message: "This Singles Registration Is Not Found"
-            });
+        if(!singlesRegistration) {
+            throw new ApiError(404, "Singles registration not found");
         }
 
         res.status(200).json({
@@ -73,7 +69,7 @@ const updateSinglesRegistrationById = asyncHandler(
         );
 
         if(!singlesRegistration) {
-            throw new Error("Singles Registration not found");
+            throw new ApiError(404, "Singles registration not found");
         }
 
         res.status(200).json({

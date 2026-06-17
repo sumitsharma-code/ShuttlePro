@@ -11,4 +11,6 @@ router.get('/team/:id',validateObjectId, teamController.getTeamById);
 
 router.delete("/team/:id",validateObjectId, teamController.deleteTeamById);
 
+router.put("/team/:id",validateObjectId, teamController.updateTeamById);
+
 module.exports = router;

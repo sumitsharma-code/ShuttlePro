@@ -12,4 +12,6 @@ router.get("/singlesRegistration/:id",validateObjectId ,singlesRegistrationContr
 
 router.delete("/singlesRegistration/:id",validateObjectId , singlesRegistrationController.deleteSinglesRegistrationById);
 
+router.put("/singlesRegistration/:id",validateObjectId , singlesRegistrationController.updateSinglesRegistrationById);
+
 module.exports = router;
