@@ -61,9 +61,33 @@ const deletePlayerById = asyncHandler(
     }
 );
 
+const updatePlayerById = asyncHandler(
+    async (req, res) => {
+        const player = await playerModel.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if(!player) {
+            throw new Error("Player not found");
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Player Updated Successfully",
+            player
+        });
+    }
+);
+
 module.exports = {
     createPlayer,
     getAllPlayers,
     getPlayerById,
-    deletePlayerById
+    deletePlayerById,
+    updatePlayerById
 };

@@ -60,10 +60,33 @@ const deleteTournamentById = asyncHandler(
     }
 );
 
+const updateTournamentById = asyncHandler(
+    async (req, res) => {
+        const tournament = await tournamentModel.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if(!tournament) {
+            throw new Error("Tournament not found");
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Tournament Updated Successfully",
+            tournament
+        });
+    }
+);
 
 module.exports = {
     createTournament,
     getAllTournaments,
     getTournamentById,
-    deleteTournamentById
+    deleteTournamentById,
+    updateTournamentById
 }

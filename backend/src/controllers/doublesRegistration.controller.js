@@ -7,7 +7,7 @@ const createDoublesRegistration = asyncHandler(
 
         res.status(201).json({
             success: true,
-            message:"Doubles Registeration Successful",
+            message:"Doubles Registration Successful",
             registration
         });
     }
@@ -61,9 +61,33 @@ const deleteDoublesRegistrationById = asyncHandler(
     }
 );
 
+const updateDoublesRegistrationById = asyncHandler(
+    async (req, res) => {
+        const registration = await doublesRegistrationModel.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if(!registration) {
+            throw new Error("Doubles Registration not found");
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Doubles Registration Updated Successfully",
+            registration
+        });
+    }
+);
+
 module.exports = {
     createDoublesRegistration,
     getAllDoublesRegistrations,
     getDoublesRegistrationById,
-    deleteDoublesRegistrationById
+    deleteDoublesRegistrationById,
+    updateDoublesRegistrationById
 };

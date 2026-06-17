@@ -61,9 +61,33 @@ const deleteMatchById = asyncHandler(
     }
 );
 
+const updateMatchById = asyncHandler(
+    async (req, res) => {
+        const match = await matchModel.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if(!match) {
+            throw new Error("Match not found");
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Match Updated Successfully",
+            match
+        });
+    }
+);
+
 module.exports = {
     createMatch,
     getAllMatches,
     getMatchById,
-    deleteMatchById
+    deleteMatchById,
+    updateMatchById
 };

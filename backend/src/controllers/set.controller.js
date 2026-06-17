@@ -62,9 +62,33 @@ const deleteSetById = asyncHandler(
     }
 );
 
+const updateSetById = asyncHandler(
+    async (req, res) => {
+        const set = await setModel.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if(!set) {
+            throw new Error("Set not found");
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Set Updated Successfully",
+            set
+        });
+    }
+);
+
 module.exports = {
     createSet,
     getAllSets,
     getSetById,
-    deleteSetById
+    deleteSetById,
+    updateSetById
 };

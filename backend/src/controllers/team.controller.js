@@ -61,9 +61,33 @@ const deleteTeamById = asyncHandler(
     }
 );
 
+const updateTeamById = asyncHandler(
+    async (req, res) => {
+        const team = await teamModel.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if(!team) {
+            throw new Error("Team not found");
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Team Updated Successfully",
+            team
+        });
+    }
+);
+
 module.exports = {
     createTeam,
     getAllTeams,
     getTeamById,
-    deleteTeamById
+    deleteTeamById,
+    updateTeamById
 };

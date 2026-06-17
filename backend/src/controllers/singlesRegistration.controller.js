@@ -61,9 +61,33 @@ const deleteSinglesRegistrationById = asyncHandler(
     }
 );
 
+const updateSinglesRegistrationById = asyncHandler(
+    async (req, res) => {
+        const singlesRegistration = await singlesRegistrationModel.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if(!singlesRegistration) {
+            throw new Error("Singles Registration not found");
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Singles Registration Updated Successfully",
+            singlesRegistration
+        });
+    }
+);
+
 module.exports = {
     createSinglesRegistration,
     getAllSinglesRegistrations,
     getSinglesRegistrationById,
-    deleteSinglesRegistrationById
+    deleteSinglesRegistrationById,
+    updateSinglesRegistrationById
 };
