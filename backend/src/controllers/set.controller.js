@@ -1,7 +1,8 @@
 const setModel = require('../models/set.model');
+const asyncHandler = require('../middlewares/asyncHandler');
 
-async function createSet(req, res) {
-    try {
+const createSet = asyncHandler(
+    async (req, res) => {
         const set = await setModel.create(req.body);
 
         res.status(201).json({
@@ -10,16 +11,10 @@ async function createSet(req, res) {
             set
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getAllSets(req, res) {
-    try {
+const getAllSets = asyncHandler(
+    async (req, res) => {
         const sets = await setModel.find();
 
         res.status(200).json({
@@ -28,61 +23,44 @@ async function getAllSets(req, res) {
             sets
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getSetById(req, res) {
-    try {
+const getSetById = asyncHandler(
+    async (req, res) => {
         const set = await setModel.findById(req.params.id);
 
-        if(!set) {
+        if (!set) {
             return res.status(404).json({
                 success: false,
                 message: "Set Not Found"
             });
         }
-        
+
         res.status(200).json({
             success: true,
             message: "Set Fetched Successfully",
             set
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function deleteSetById(req, res) {
-    try {
+const deleteSetById = asyncHandler(
+    async (req, res) => {
         const set = await setModel.findByIdAndDelete(req.params.id);
-        
-        if(!set) {
+
+        if (!set) {
             return res.status(404).json({
                 success: false,
                 message: "Set Not Found"
             });
         }
+
         res.status(200).json({
             success: true,
             message: "Set Deleted Successfully"
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
 module.exports = {
     createSet,

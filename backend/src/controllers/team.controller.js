@@ -1,50 +1,39 @@
 const teamModel = require("../models/team.model");
+const asyncHandler = require("../middlewares/asyncHandler");
 
-async function createTeam(req, res) {
-    try {
+const createTeam = asyncHandler(
+    async (req, res) => {
         const team = await teamModel.create(req.body);
 
         res.status(201).json({
             success: true,
-            message:"Team Added Successfully",
+            message: "Team Added Successfully",
             team
         });
     }
-    catch (error){
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getAllTeams(req, res) {
-    try {
+const getAllTeams = asyncHandler(
+    async (req, res) => {
         const allTeams = await teamModel.find();
 
         res.status(200).json({
-            "success": true,
+            success: true,
             message: "Teams Fetched Successfully",
             teams: allTeams
         });
     }
-    catch (error){
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getTeamById(req, res) {
-    try {
+const getTeamById = asyncHandler(
+    async (req, res) => {
         const team = await teamModel.findById(req.params.id);
 
-        if(!team) {
+        if (!team) {
             return res.status(404).json({
                 success: false,
                 message: "Team Not Found"
-            })
+            });
         }
 
         res.status(200).json({
@@ -52,23 +41,17 @@ async function getTeamById(req, res) {
             team
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function deleteTeamById(req, res) {
-    try {
+const deleteTeamById = asyncHandler(
+    async (req, res) => {
         const team = await teamModel.findByIdAndDelete(req.params.id);
 
-        if(!team) {
+        if (!team) {
             return res.status(404).json({
                 success: false,
                 message: "Team Not Found"
-            })
+            });
         }
 
         res.status(200).json({
@@ -76,13 +59,7 @@ async function deleteTeamById(req, res) {
             message: "Team Deleted Successfully"
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
 module.exports = {
     createTeam,

@@ -1,5 +1,6 @@
 const express = require("express");
-const doublesRegistrationController = require('../controllers/doublesRegistration.controller')
+const doublesRegistrationController = require('../controllers/doublesRegistration.controller');
+const validateObjectId = require("../middlewares/validateObjectId");
 const router = express.Router();
 
 
@@ -7,8 +8,8 @@ router.post("/doublesRegistration", doublesRegistrationController.createDoublesR
 
 router.get("/doublesRegistration", doublesRegistrationController.getAllDoublesRegistrations);
 
-router.get("/doublesRegistration/:id", doublesRegistrationController.getDoublesRegistrationById);
+router.get("/doublesRegistration/:id", validateObjectId, doublesRegistrationController.getDoublesRegistrationById);
 
-router.delete("/doublesRegistration/:id", doublesRegistrationController.deleteDoublesRegistrationById);
+router.delete("/doublesRegistration/:id",validateObjectId , doublesRegistrationController.deleteDoublesRegistrationById);
 
 module.exports = router;

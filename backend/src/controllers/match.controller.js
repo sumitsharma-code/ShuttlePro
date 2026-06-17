@@ -1,7 +1,8 @@
+const asyncHandler = require('../middlewares/asyncHandler');
 const matchModel = require('../models/match.model');
 
-async function createMatch(req, res) {
-    try {
+const createMatch = asyncHandler(
+    async (req, res) => {
         const match = await matchModel.create(req.body);
 
         res.status(201).json({
@@ -10,16 +11,10 @@ async function createMatch(req, res) {
             match
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getAllMatches(req, res) {
-    try {
+const getAllMatches = asyncHandler(
+    async (req, res) => {
         const matches = await matchModel.find();
 
         res.status(200).json({
@@ -28,16 +23,10 @@ async function getAllMatches(req, res) {
             matches
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getMatchById(req, res) {
-    try {
+const getMatchById = asyncHandler(
+    async (req, res) => {
         const match = await matchModel.findById(req.params.id);
 
         if(!match) {
@@ -53,16 +42,10 @@ async function getMatchById(req, res) {
             match
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function deleteMatchById(req, res) {
-    try {
+const deleteMatchById = asyncHandler(
+    async (req, res) => {
         const match = await matchModel.findByIdAndDelete(req.params.id);
         
         if(!match) {
@@ -76,13 +59,7 @@ async function deleteMatchById(req, res) {
             message: "Match Deleted Successfully"
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
 module.exports = {
     createMatch,

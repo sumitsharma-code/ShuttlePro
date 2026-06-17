@@ -1,25 +1,20 @@
 const tournamentModel = require('../models/tournament.model');
+const asyncHandler = require("../middlewares/asyncHandler");
 
-async function createTournament(req, res) {
-    try {
-        const tour = await tournamentModel.create(req.body);
+const createTournament = asyncHandler(
+    async (req, res) => {
+        const tournament = await tournamentModel.create(req.body);
 
         res.status(201).json({
             success: true,
             message: "Tournament Created Successfully!",
-            tour
+            tournament
         });
     }
-    catch (error){
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getAllTournaments(req, res) {
-    try {
+const getAllTournaments = asyncHandler(
+    async (req, res) => {
         const tour = await tournamentModel.find();
         res.status(200).json({
             success: true,
@@ -27,16 +22,10 @@ async function getAllTournaments(req, res) {
             tour
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getTournamentById(req, res) {
-    try {
+const getTournamentById = asyncHandler(
+    async (req, res) => {
         const tour = await tournamentModel.findById(req.params.id);
 
         if(!tour) {
@@ -51,16 +40,10 @@ async function getTournamentById(req, res) {
             tour
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function deleteTournamentById(req, res) {
-    try {
+const deleteTournamentById = asyncHandler(
+    async (req, res) => {
         const tour = await tournamentModel.findByIdAndDelete(req.params.id);
 
         if(!tour) {
@@ -75,13 +58,7 @@ async function deleteTournamentById(req, res) {
             message: "tournament deleted successfully"
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
 
 module.exports = {

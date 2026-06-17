@@ -1,7 +1,8 @@
 const doublesRegistrationModel = require("../models/doublesRegistration.model");
+const asyncHandler = require('../middlewares/asyncHandler');
 
-async function createDoublesRegistration(req, res) {
-    try {
+const createDoublesRegistration = asyncHandler(
+    async (req, res) => {
         const registration = await doublesRegistrationModel.create(req.body);
 
         res.status(201).json({
@@ -10,16 +11,10 @@ async function createDoublesRegistration(req, res) {
             registration
         });
     }
-    catch (error){
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getAllDoublesRegistrations(req, res) {
-    try {
+const getAllDoublesRegistrations = asyncHandler(
+    async (req, res) => {
         const allDoublesRegistrations = await doublesRegistrationModel.find();
 
         res.status(200).json({
@@ -28,16 +23,10 @@ async function getAllDoublesRegistrations(req, res) {
             allDoublesRegistrations
         });
     }
-    catch (error){
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function getDoublesRegistrationById(req, res) {
-    try {
+const getDoublesRegistrationById = asyncHandler(
+    async (req, res) => {
         const doublesRegistration = await doublesRegistrationModel.findById(req.params.id);
 
         if(!doublesRegistration) {
@@ -52,16 +41,10 @@ async function getDoublesRegistrationById(req, res) {
             doublesRegistration
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
-async function deleteDoublesRegistrationById(req, res) {
-    try {
+const deleteDoublesRegistrationById = asyncHandler(
+    async (req, res) => {
         const doublesRegistration = await doublesRegistrationModel.findByIdAndDelete(req.params.id);
 
         if(!doublesRegistration) {
@@ -76,13 +59,7 @@ async function deleteDoublesRegistrationById(req, res) {
             message: "Doubles Registration Deleted Successfully"
         });
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
+);
 
 module.exports = {
     createDoublesRegistration,
