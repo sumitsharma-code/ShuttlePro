@@ -20,7 +20,7 @@ const categorySchema = new mongoose.Schema({
     },
     minAge : {
         type: Number,
-        dafault: null,
+        default: null,
         min: 0
     },
     maxAge: {

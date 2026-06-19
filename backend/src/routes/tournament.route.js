@@ -19,6 +19,4 @@ router.get("/tournament/:id/singles-registrations", validateObjectId, tournament
 router.get("/tournament/:id/doubles-registrations", validateObjectId, tournamentController.getDoublesRegistrationByTournamentId );
 router.get("/tournament/:id/matches", validateObjectId, tournamentController.getMatchesByTournamentId);
 
-// fixtures
-// router.get("/tournament/:id/generate-singles-fixtures ")
 module.exports = router;
